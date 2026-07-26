@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KENARU TECH | El Gigante del E-Commerce - 50 Productos en Catálogo</title>
+    
+    <link rel="icon" href="logo.png" sizes="32x32" />
+
+    <style>
+        :root {
+            --primary-color: #dd3333; /* Rojo Lobo */
+            --dark-color: #111111;    
+            --bg-color: #f4f4f4;      
+            --whatsapp-color: #25D367;
+        }
+
+        body {
+            font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: #333;
+        }
+
+        /* BARRA SUPERIOR */
+        .top-bar {
+            background-color: var(--dark-color);
+            color: #fff;
+            font-size: 0.8em;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        .top-bar-socials {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .top-bar-socials span {
+            color: #aaa;
+            font-weight: normal;
+        }
+        .top-bar-socials a {
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+            text-decoration: none;
+        }
+        .top-bar-socials a:hover {
+            transform: scale(1.15);
+        }
+        /* Tamaño de los logos reales */
+        .social-icon-img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        /* CABECERA CON PORTADA DE FONDO */
+        header {
+            position: relative;
+            background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('portada.jpg') center/cover no-repeat #222;
+            padding: 35px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e3e3e3;
+        }
+        header h1 {
+            color: #ffffff;
+            margin: 10px 0;
+            font-size: 2.2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+        .logo { 
+            max-width: 130px; 
+            height: auto; 
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* BUSCADOR */
+        .search-container {
+            max-width: 500px;
+            margin: 15px auto 0 auto;
+            display: flex;
+        }
+        .search-container input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            font-size: 1em;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .search-container input:focus { border-color: var(--primary-color); }
+
+        /* NAVEGACIÓN STICKY */
+        nav {
+            background-color: var(--primary-color);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .nav-links a {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: bold;
+            font-size: 0.85em;
+            cursor: pointer;
+        }
+        .nav-links a:hover { text-decoration: underline; }
+        .cart-icon {
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            background-color: rgba(0,0,0,0.25);
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        
+        /* CONTENEDOR */
+        .container { padding: 20px; max-width: 1350px; margin: auto; }
+
+        /* CUADRÍCULA */
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+        .producto-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            background-color: #fff;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .producto-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 15px rgba(0,0,0,0.1);
+        }
+
+        .badge {
+            position: absolute; top: 10px; left: 10px;
+            background-color: var(--primary-color); color: white;
+            font-size: 0.7em; padding: 4px 8px; font-weight: bold;
+            border-radius: 3px; text-transform: uppercase; z-index: 1;
+        }
+        .badge.azul { background-color: #007bff; }
+
+        .producto-card img {
+            width: 100%; height: 160px;
+            object-fit: contain; margin-bottom: 10px;
+        }
+        .categoria-tag {
+            font-size: 0.7em; text-transform: uppercase;
+            color: #999; font-weight: bold; margin-bottom: 5px;
+        }
+        .producto-card h4 {
+            margin: 5px 0 8px 0; color: #222;
+            font-size: 0.9em; height: 38px; overflow: hidden;
+            line-height: 1.3;
+        }
+        .medios-pago-icons {
+            font-size: 0.65em; color: #666; background: #f9f9f9;
+            padding: 4px; border-radius: 4px; margin-bottom: 8px;
+        }
+        .precio { font-size: 1.25em; font-weight: bold; color: var(--primary-color); margin-bottom: 12px; }
+
+        .btn-comprar {
+            display: block; background-color: var(--dark-color); color: white;
+            padding: 10px; text-decoration: none; border-radius: 4px;
+            font-weight: bold; font-size: 0.8em; transition: background 0.2s;
+        }
+        .btn-comprar:hover { background-color: var(--primary-color); }
+
+        /* FOOTER */
+        footer {
+            background-color: var(--dark-color); color: #aaa;
+            padding: 40px 20px; margin-top: 50px; text-align: center; font-size: 0.85em;
+        }
+        .footer-cols {
+            display: flex; flex-wrap: wrap; justify-content: space-around;
+            max-width: 1100px; margin: 0 auto 30px auto; text-align: left;
+        }
+        .footer-col { margin: 15px; min-width: 200px; max-width: 280px; }
+        .footer-col h5 { color: white; font-size: 1.1em; margin-bottom: 10px; }
+        .footer-col a { color: #fff; text-decoration: none; display: block; margin-bottom: 6px; }
+        .footer-col a:hover { color: var(--primary-color); text-decoration: underline; }
+
+        /* BOTÓN FLOTANTE DE WHATSAPP */
+        #kenaru_floating_whatsapp {
+            position: fixed; 
+            bottom: 25px; 
+            right: 20px; 
+            z-index: 9999;
+            background-color: var(--whatsapp-color); 
+            color: white;
+            padding: 14px 22px; 
+            text-decoration: none; 
+            border-radius: 50px;
+            font-weight: bold; 
+            font-size: 0.95em;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        #kenaru_floating_whatsapp:hover {
+            transform: scale(1.05);
+        }
+        .ws-icon-svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div>🚚 ENVIOS RÁPIDOS A PIURA Y TODO EL PERÚ - COMPRA 100% SEGURA</div>
+        <div class="top-bar-socials">
+            <span>Síguenos:</span> 
+            <a href="https://www.facebook.com/share/1EgXa377cg/" target="_blank" title="Facebook">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="Facebook" class="social-icon-img">
+            </a>
+            <a href="https://www.tiktok.com/@yoverase?_r=1&_t=ZS-96U0wQrsvDe" target="_blank" title="TikTok">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/q/q8/TikTok_Icon.svg" alt="TikTok" class="social-icon-img" style="filter: drop-shadow(0px 0px 1px #fff);">
+            </a>
+        </div>
+    </div>
+
+    <header>
+        <img src="logo.png" alt="Logo KENARU TECH" class="logo">
+        <h1>KENARU TECH</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="filtrarPorTexto()" placeholder="¿Buscas algo en específico? Escribe aquí...">
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-links">
+            <a onclick="filtrarPorCategoria('todos')">Todos (50)</a>
+            <a onclick="filtrarPorCategoria('tecnología')">Tecnología</a>
+            <a onclick="filtrarPorCategoria('hogar y cocina')">Hogar y Cocina</a>
+            <a onclick="filtrarPorCategoria('salud y belleza')">Salud y Belleza</a>
+        </div>
+        <a href="#" class="cart-icon" onclick="alert('Tu carrito está vacío.')">🛒 MI CARRITO (0)</a>
+    </nav>
+
+    <div class="container">
+
+        <div class="grid-productos" id="listaProductos">
+            
+            <div class="producto-card">
+                <span class="badge">Oferta</span>
+                <img src="prod1.png" alt="Cargador de Pared Carga Rápida 20W">
+                <div><span class="categoria-tag">Tecnología</span><h4>Cargador de Pared Carga Rápida 20W</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 45.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Cargador%20de%20Pared%20Carga%20R%C3%A1pida%2020W" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod2.png" alt="Cable USB-C de Nylon Reforzado 1.2M">
+                <div><span class="categoria-tag">Tecnología</span><h4>Cable USB-C de Nylon Reforzado 1.2M</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 25.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Cable%20USB-C%20de%20Nylon%20Reforzado%201.2M" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod3.png" alt="Audífonos In-Ear HD Sonido Envolvente">
+                <div><span class="categoria-tag">Tecnología</span><h4>Audífonos In-Ear HD Sonido Envolvente</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 60.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20los%20Aud%C3%ADfonos%20In-Ear%20HD%20Sonido%20Envolvente" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <span class="badge azul">Popular</span>
+                <img src="prod4.png" alt="Smartwatch Deportivo Ritmo Cardíaco">
+                <div><span class="categoria-tag">Tecnología</span><h4>Smartwatch Deportivo Ritmo Cardíaco</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 89.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Smartwatch%20Deportivo%20Ritmo%20Card%C3%ADaco" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod5.png" alt="Parlante Bluetooth Portátil Impermeable">
+                <div><span class="categoria-tag">Tecnología</span><h4>Parlante Bluetooth Portátil Impermeable</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 55.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Parlante%20Bluetooth%20Port%C3%A1til%20Impermeable" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod6.png" alt="Foco LED Parlante Música Bluetooth RGB">
+                <div><span class="categoria-tag">Tecnología</span><h4>Foco LED Parlante Música Bluetooth RGB</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 28.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Foco%20LED%20Parlante%20M%C3%BAsica%20Bluetooth%20RGB" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod7.png" alt="Soporte de Escritorio Ajustable Celular">
+                <div><span class="categoria-tag">Tecnología</span><h4>Soporte de Escritorio Ajustable Celular</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 19.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Soporte%20de%20Escritorio%20Ajustable%20Celular" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <span class="badge">Nuevo</span>
+                <img src="prod8.png" alt="Tira de Luces LED RGB 5 Metros Control">
+                <div><span class="categoria-tag">Tecnología</span><h4>Tira de Luces LED RGB 5 Metros Control</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 38.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Tira%20de%20Luces%20LED%20RGB%205%20Metros%20Control" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod9.png" alt="Cámara Antirrobo Falsa con Luz Intermitente">
+                <div><span class="categoria-tag">Tecnología</span><h4>Cámara Antirrobo Falsa Luz Intermitente</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 24.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20C%C3%A1mara%20Antirrobo%20Falsa%20Luz%20Intermitente" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod10.png" alt="Cargador Portátil Power Bank 10,000 mAh">
+                <div><span class="categoria-tag">Tecnología</span><h4>Cargador Portátil Power Bank 10k mAh</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 69.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Cargador%20Port%C3%A1til%20Power%20Bank%2010k%20mAh" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod11.png" alt="Audífonos Bluetooth Inalámbricos Gamer">
+                <div><span class="categoria-tag">Tecnología</span><h4>Audífonos Bluetooth Inalámbricos Gamer</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 49.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20los%20Aud%C3%ADfonos%20Bluetooth%20Inal%C3%A1mbricos%20Gamer" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod12.png" alt="Adaptador USB Tipo C a Jack 3.5mm">
+                <div><span class="categoria-tag">Tecnología</span><h4>Adaptador USB Tipo C a Jack 3.5mm</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 15.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Adaptador%20USB%20Tipo%20C%20a%20Jack%203.5mm" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="mouse.png" alt="Mouse Óptico Inalámbrico Ergonómico">
+                <div><span class="categoria-tag">Tecnología</span><h4>Mouse Óptico Inalámbrico Ergonómico</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 29.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Mouse%20%C3%93ptico%20Inal%C3%A1mbrico%20Ergon%C3%B3mico" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod14.png" alt="Hub Multi-Puerto USB de 4 Entradas">
+                <div><span class="categoria-tag">Tecnología</span><h4>Hub Multi-Puerto USB de 4 Entradas</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 22.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Hub%20Multi-Puerto%20USB%20de%204%20Entradas" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod15.png" alt="Soporte Magnético para Auto Celular">
+                <div><span class="categoria-tag">Tecnología</span><h4>Soporte Magnético para Auto Celular</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 18.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Soporte%20Magn%C3%A9tico%20para%20Auto%20Celular" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod16.png" alt="Cable HDMI de Alta Velocidad 4K 2 Metros">
+                <div><span class="categoria-tag">Tecnología</span><h4>Cable HDMI Alta Velocidad 4K 2 Metros</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 24.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Cable%20HDMI%20Alta%20Velocidad%204K%202%20Metros" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod17.png" alt="Aro de Luz LED con Trípode para Videos">
+                <div><span class="categoria-tag">Tecnología</span><h4>Aro de Luz LED con Trípode Mediano</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 45.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Aro%20de%20Luz%20LED%20con%20Tr%C3%ADpode%20Mediano" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod18.png" alt="Teclado Numérico USB para Laptop">
+                <div><span class="categoria-tag">Tecnología</span><h4>Teclado Numérico USB para Laptop</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 32.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Teclado%20Num%C3%A9rico%20USB%20para%20Laptop" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod19.png" alt="Amplificador de Señal Wi-Fi Repetidor">
+                <div><span class="categoria-tag">Tecnología</span><h4>Amplificador de Señal Wi-Fi Repetidor</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 59.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Amplificador%20de%20Se%C3%B1al%20Wi-Fi%20Repetidor" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod20.png" alt="Mini Ventilador USB de Escritorio">
+                <div><span class="categoria-tag">Tecnología</span><h4>Mini Ventilador USB de Escritorio</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 21.50</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Mini%20Ventilador%20USB%20de%20Escritorio" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+
+            <div class="producto-card">
+                <span class="badge">Top Ventas</span>
+                <img src="prod21.png" alt="Organizador de Cocina Multiusos Estante">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Organizador de Cocina Multiusos</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 39.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Organizador%20de%20Cocina%20Multiusos" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod22.png" alt="Mini Picatodo Eléctrico Recargable USB">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Mini Picatodo Eléctrico Recargable USB</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 35.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Mini%20Picatodo%20El%C3%A9ctrico%20Recargable%20USB" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod23.png" alt="Dispensador Automático Recargable Agua">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Dispensador Automático de Agua Bidón</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 19.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Dispensador%20Autom%C3%A1tico%20de%20Agua%20Bid%C3%B3n" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod24.png" alt="Sartén Antiadherente de 4 Cavidades Huevos">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Sartén Antiadherente 4 Cavidades</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 42.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Sart%C3%A9n%20Antiadherente%204%20Cavidades" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod25.png" alt="Repisa Organizadora Adhesiva para Baño">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Repisa Organizadora Adhesiva Baño</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 15.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Repisa%20Organizadora%20Adhesiva%20Ba%C3%B1o" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <span class="badge">Práctico</span>
+                <img src="prod26.png" alt="Mini Licuadora Portátil Recargable USB">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Mini Licuadora Portátil Recargable USB</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 49.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Mini%20Licuadora%20Port%C3%A1til%20Recargable%20USB" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod27.png" alt="Balanza Gramera Digital de Alta Precisión">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Balanza Gramera Digital de Cocina</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 24.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Balanza%20Gramera%20Digital%20de%20Cocina" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod28.png" alt="Batidor Eléctrico de Mano Espumador Café">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Mini Batidor Espumador de Café</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 12.50</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Mini%20Batidor%20Espumador%20de%20Caf%C3%A9" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod29.png" alt="Afilador de Cuchillos Ergonómico 3 Niveles">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Afilador de Cuchillos Pro 3 Niveles</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 18.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Afilador%20de%20Cuchillos%20Pro%203%20Niveles" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod30.png" alt="Cortador de Verduras Multiusos Mandolina">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Cortador Rallador de Verduras 4 en 1</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 39.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Cortador%20Rallador%20de%20Verduras%204%20en%201" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod31.png" alt="Sellador de Bolsas Plásticas Portátil Mini">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Mini Sellador de Bolsas Térmico</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 14.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Mini%20Sellador%20de%20Bolsas%20T%C3%A9rmico" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod32.png" alt="Lámpara LED de Noche con Sensor de Movimiento">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Lámpara LED Inteligente con Sensor</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 19.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20L%C3%A1mpara%20LED%20Inteligente%20con%20Sensor" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod33.png" alt="Pastillero Semanal Organizador 7 Días">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Pastillero Semanal Organizador Diario</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 10.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Pastillero%20Semanal%20Organizador%20Diario" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod34.png" alt="Espejo LED de Maquillaje Táctil Regulable">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Espejo Cosmético Luz LED Táctil</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 34.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Espejo%20Cosm%C3%A9tico%20Luz%20LED%20T%C3%A1cil" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod35.png" alt="Humidificador Difusor de Aroma Ultrasónico">
+                <div><span class="categoria-tag">Hogar y Cocina</span><h4>Humidificador Difusor Aroma Ultrasónico</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 44.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Humidificador%20Difusor%20Aroma%20Ultras%C3%B3nico" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+
+            <div class="producto-card">
+                <span class="badge">Top Ventas</span>
+                <img src="prod36.png" alt="Masajeador Cervical Eléctrico Alivio Cuello">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Masajeador Cervical Eléctrico Alivio</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 75.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Masajeador%20Cervical%20El%C3%A9ctrico%20Alivio" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod37.png" alt="Depilador Facial Corporal Recargable">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Depilador Facial Corporal Recargable</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 34.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Depilador%20Facial%20Corporal%20Recargable" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod38.png" alt="Faja Moldeadora Deportiva Neopreno Reductora">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Faja Moldeadora de Neopreno Reductora</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 29.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Faja%20Moldeadora%20de%20Neopreno%20Reductora" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod39.png" alt="Limpiador Facial Ultrasónico de Poros Acné">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Limpiador Facial Ultrasónico de Poros</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 49.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Limpiador%20Facial%20Ultras%C3%B3nico de Poros" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <span class="badge">Salud</span>
+                <img src="prod40.png" alt="Pistola de Masaje Muscular de Alta Frecuencia">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Pistola de Masaje Muscular Frecuencia</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 85.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Pistola%20de%20Masaje%20Muscular%20Frecuencia" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod41.png" alt="Rizador de Pestañas Eléctrico Térmico USB">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Rizador de Pestañas Eléctrico Térmico</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 24.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Rizador%20de%20Pesta%C3%B1as%20El%C3%A9ctrico%20T%C3%A9rmico" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod42.png" alt="Masajeador Facial Rodillo de Jade Doble">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Masajeador Facial Rodillo de Jade</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 19.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Masajeador%20Facial%20Rodillo%20de%20Jade" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod43.png" alt="Plancha de Cabello Mini Viajera Portátil">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Plancha de Cabello Mini Viajera</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 22.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Plancha%20de%20Cabello%20Mini%20Viajera" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod44.png" alt="Lima de Pies Eléctrica Quita Callos Pulidor">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Lima de Pies Eléctrica Quita Callos</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 39.90</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Lima%20de%20Pies%20El%C3%A9ctrica%20Quita%20Callos" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod45.png" alt="Corrector de Postura Espalda Ajustable Unisex">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Corrector de Postura Espalda Ajustable</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 28.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Corrector%20de%20Postura%20Espalda%20Ajustable" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod46.png" alt="Extractor de Puntos Negros Succión Vacío">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Extractor de Puntos Negros Succión</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 45.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Extractor%20de%20Puntos%20Negros%20Succi%C3%B3n" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod47.png" alt="Gel Almohadilla Corrector Juanetes Silicona">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Corrector Juanetes de Gel Silicona</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 12.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20el%20Corrector%20Juanetes%20de%20Gel%20Silicona" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod48.png" alt="Estimulador Muscular Eléctrico Parches EMS">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Parches Estimulador Muscular EMS</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 35.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20los%20Parches%20Estimulador%20Muscular%20EMS" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod49.png" alt="Báscula Digital Baño Peso Corporal">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Báscula Digital de Baño Corporal</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 49.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20B%C3%A1scula%20Digital%20de%20Ba%C3%B1o%20Corporal" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+            <div class="producto-card">
+                <img src="prod50.png" alt="Cortadora de Cabello Profesional Patillera">
+                <div><span class="categoria-tag">Salud y Belleza</span><h4>Cortadora de Cabello Patillera Vintage</h4><div class="medios-pago-icons">💳 Yape, Plin, Efectivo</div><div class="precio">S/ 55.00</div></div>
+                <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20me%20interesa%20la%20Cortadora%20de%20Cabello%20Patillera%20Vintage" class="btn-comprar" target="_blank">Pedir por WhatsApp</a>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-cols">
+            <div class="footer-col">
+                <h5>Sobre Nosotros</h5>
+                <p>KENARU TECH es tu tienda aliada en la importación y distribución de novedades de alta calidad en todo el Perú.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Atención al Cliente</h5>
+                <p>📞 Soporte: +51 934 597 473<br>📍 Despachos inmediatos a Piura.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Nuestras Redes</h5>
+                <a href="https://www.facebook.com/share/1EgXa377cg/" target="_blank">➡️ Síguenos en Facebook</a>
+                <a href="https://www.tiktok.com/@yoverase?_r=1&_t=ZS-96U0wQrsvDe" target="_blank">➡️ Síguenos en TikTok</a>
+            </div>
+        </div>
+        <p>&copy; 2026 KENARU TECH. Todos los derechos reservados.</p>
+    </footer>
+
+    <a href="https://wa.me/51934597473?text=Hola%20KENARU%20TECH,%20necesito%20ayuda" id="kenaru_floating_whatsapp" target="_blank">
+        <svg class="ws-icon-svg" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> Chat en Vivo
+    </a>
+
+    <script>
+        function filtrarPorCategoria(cat) {
+            let cards = document.getElementsByClassName('producto-card');
+            for (let i = 0; i < cards.length; i++) {
+                let tag = cards[i].getElementsByClassName('categoria-tag')[0].innerText.toLowerCase();
+                cards[i].style.display = (cat === 'todos' || tag === cat) ? "" : "none";
+            }
+        }
+
+        function filtrarPorTexto() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('producto-card');
+            
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByTagName('h4')[0].innerText.toLowerCase();
+                let cat = cards[i].getElementsByClassName('categoria-tag')[0].innerText.toLowerCase();
+                cards[i].style.display = (title.includes(input) || cat.includes(input)) ? "" : "none";
+            }
+        }
+    </script>
+
+</body>
+</html>
